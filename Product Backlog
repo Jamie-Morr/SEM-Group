@@ -1,0 +1,5 @@
+ToDo List:
+Create project file for coursework
+Set up Dockerfile
+Set up Travis CI
+Make Travis CI work with .jar and docker files.
