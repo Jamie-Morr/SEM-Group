@@ -42,7 +42,7 @@ public class SQLConnection
             //Tries to connect
             try
             {
-                connection = DriverManager.getConnection("jdbc:mysql://connection:3306/world?useSSL=false", "root", "example");
+                connection = DriverManager.getConnection("jdbc:mysql://db:33060/world?useSSL=false", "root", "example");
                 System.out.println("Establishing a means communication.");
                 break;
             }
