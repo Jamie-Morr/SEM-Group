@@ -112,16 +112,16 @@ public class SQLConnection {
             Statement statement = connection.createStatement();
             String query = "Select waterDown2.areaType, sum(waterDown2.pop1), sum(waterDown2.pop2) from( " +
                     "Select waterDown.areaType as areaType, waterDown.pop1 as pop1, sum(waterDown.pop2) as pop2 from( " +
-                    "Select country." + areaCategory + " as areaType, country.Popilation as pop1, city.Population as pop2 " +
+                    "Select country." + categoryName + " as areaType, country.Popilation as pop1, city.Population as pop2 " +
                     "From 'Country' RIGHT JOIN city ON country.code = city.CountryCode " +
                     "Where country." + categoryName + " '" + areaName + "') as waterDown " +
                     "group by derp.name) as waterDown2 group by waterDown2.areaType";
             ResultSet resultSet = statement.executeQuery(query);
             ArrayList<PopulationReport> results = new ArrayList<>();
-            if(resultSet.next()) {
+            while (resultSet.next()) {
                 results.add(new PopulationReport(resultSet.getString("areaType"), resultSet.getInt("pop1"), resultSet.getInt("pop2")));
             }
-            else if (results.isEmpty())
+            if (results.isEmpty())
             {
                 return null;
             }
@@ -131,7 +131,5 @@ public class SQLConnection {
         } catch (Exception e) {
             return null;
         }
-        //This can't actually be reached?
-        return null;
     }
 }
