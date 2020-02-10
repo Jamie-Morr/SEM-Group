@@ -1,17 +1,32 @@
 @startuml
 
-actor HR as "HR Advisor"
+actor US as "User"
 
-rectangle Database
+actor AD as "Admin"
 
-rectangle "HR System" {
-    usecase UC4 as "Get salaries
-    by role"
 
-    usecase UCa as "Print salaries"
 
-    HR - UC4
-    UC4 ..> UCa : include
-    UC4 - Database
-}
+usecase UC1 as "Get country population data"
+
+usecase UC2 as "Get language data"
+
+usecase UC3 as "Get percentage data "
+
+usecase UC4 as "The reports"
+
+usecase UC5 as "Country/City names"
+
+
+AD -- UC1
+
+AD -- UC2
+
+AD -- UC3
+
+US -- UC4
+
+US -- UC5
+
+AD -> US : provide
+
 @enduml
