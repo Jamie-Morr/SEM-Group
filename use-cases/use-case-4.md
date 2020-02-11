@@ -1,14 +1,14 @@
-# USE CASE: 4 Produce a Report on the Salary of Employees of a Given Role
+# USE CASE: 4 Produce a Report on the world population of a Given Choice
 
 ## CHARACTERISTIC INFORMATION
 
 ### Goal in Context
 
-As an *HR advisor* I want *to produce a report on the salary of employees of a given role* so that *I can support financial reporting of the organisation.*
+As an *Data analyst* I want *to produce a report on the population of a imputed choice* so that *I can produce the required data.*
 
 ### Scope
 
-Company.
+World health organization.
 
 ### Level
 
@@ -16,11 +16,11 @@ Primary task.
 
 ### Preconditions
 
-We know the role.  Database contains current employee salary data.
+Database contains world population data.
 
 ### Success End Condition
 
-A report is available for HR to provide to finance.
+A report is available for World health organization.
 
 ### Failed End Condition
 
@@ -28,23 +28,22 @@ No report is produced.
 
 ### Primary Actor
 
-HR Advisor.
+Data analyst.
 
 ### Trigger
 
-A request for finance information is sent to HR.
+A request for population information is sent to Data analyst.
 
 ## MAIN SUCCESS SCENARIO
 
-1. Finance request salary information for a given role.
-2. HR advisor captures name of the role to get salary information for.
-3. HR advisor extracts current salary information of all employees of the given role.
-4. HR advisor provides report to finance.
+1. User request population information for a given choice.
+2. Data analyst generates population of the selected choice to get population information for.
+3. Data analyst provides reports to world health organization.
 
 ## EXTENSIONS
 
-3. **Role does not exist**:
-    1. HR advisor informs finance no role exists.
+3. **Population data does not exist**:
+    
 
 ## SUB-VARIATIONS
 
@@ -52,4 +51,4 @@ None.
 
 ## SCHEDULE
 
-**DUE DATE**: Release 1.0
+**DUE DATE**: v0.1.0.2
