@@ -107,11 +107,11 @@ public class SQLConnection {
         }
         try {
             Statement statement = connection.createStatement();
-            String query = "Select waterDown2.areaType, sum(waterDown2.pop1), sum(waterDown2.pop2) from( " +
+            String query = "Select waterDown2.areaType as areaType, sum(waterDown2.pop1) as pop1, sum(waterDown2.pop2) as pop2 from( " +
                     "Select waterDown.areaType as areaType, waterDown.pop1 as pop1, sum(waterDown.pop2) as pop2 from( " +
                     "Select country.name as name, country." + categoryName + " as areaType, country.Population as pop1, city.Population as pop2 " +
-                    "From country RIGHT JOIN city ON country.code = city.CountryCode " +
-                    "Where country." + categoryName + " = \" " + areaName + "\") as waterDown " +
+                    "From country JOIN city ON country.code = city.CountryCode " +
+                    "Where country." + categoryName + " = \"" + areaName + "\") as waterDown " +
                     "group by waterDown.name, waterDown.pop1) as waterDown2 group by waterDown2.areaType";
             ResultSet resultSet = statement.executeQuery(query);
             ArrayList<PopulationReport> results = new ArrayList<>();
@@ -120,6 +120,7 @@ public class SQLConnection {
             }
             if (results.isEmpty())
             {
+                System.out.println("Failled to populate the results.");
                 return null;
             }
             else {

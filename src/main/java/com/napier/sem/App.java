@@ -43,9 +43,10 @@ public class App {
 
         //Ends the database connection
         database.disconnect();
+        database = null;
     }
 
-    private static boolean testPopWithCity()
+    static boolean testPopWithCity()
     {
         ArrayList<PopulationReport> report;
         report = database.popWithoutCity("Eastern Europe", 3);
