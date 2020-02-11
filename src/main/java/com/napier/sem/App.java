@@ -15,6 +15,7 @@ public class App {
         //Oliwier, SQL connections
         SQLConnection database = new SQLConnection();
 
+        database.func();
         if (database.testConnection())
         {
             System.out.println("Connection pass");

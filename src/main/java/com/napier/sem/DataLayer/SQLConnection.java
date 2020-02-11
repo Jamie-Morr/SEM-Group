@@ -104,4 +104,22 @@ public class SQLConnection
         }
         return true;
     }
+
+    public void func() {
+        try {
+            Statement statement = connection.createStatement();
+            String query = "SELECT city.name, country.name, city.population FROM country join city on country.Capital = city.ID ORDER BY city.population DESC";
+            ResultSet resultSet = statement.executeQuery(query);
+
+            if (resultSet.next()) {
+
+                resultSet.getString("city.name");
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
 }
+
+
