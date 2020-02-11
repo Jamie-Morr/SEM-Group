@@ -2,9 +2,6 @@ package com.napier.sem;
 
 import com.napier.sem.DataLayer.PopulationReport;
 import com.napier.sem.DataLayer.SQLConnection;
-import sun.jvm.hotspot.oops.DataLayout;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -48,7 +45,7 @@ public class App {
         database.disconnect();
     }
 
-    static boolean testPopWithCity()
+    private static boolean testPopWithCity()
     {
         ArrayList<PopulationReport> report;
         report = database.popWithoutCity("Eastern Europe", 3);

@@ -66,15 +66,12 @@ public class SQLConnection {
      * @return boolean - Whether the connection was drooped.
      */
     public boolean disconnect() {
-        if (connection != null) {
-            try {
-                connection.close();
-                return true;
-            } catch (SQLException e) {
-                return false;
-            }
+        try {
+            connection.close();
+            return true;
+        } catch (SQLException e) {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -83,10 +80,10 @@ public class SQLConnection {
      * @return boolean - whether a database connection has been established
      */
     public boolean testConnection() {
-        if (connection == null) {
-            return false;
+        if (connection != null) {
+            return true;
         }
-        return true;
+        return false;
     }
 
     public ArrayList<PopulationReport> popWithoutCity(String areaName, int areaCategory) {
@@ -112,10 +109,10 @@ public class SQLConnection {
             Statement statement = connection.createStatement();
             String query = "Select waterDown2.areaType, sum(waterDown2.pop1), sum(waterDown2.pop2) from( " +
                     "Select waterDown.areaType as areaType, waterDown.pop1 as pop1, sum(waterDown.pop2) as pop2 from( " +
-                    "Select country." + categoryName + " as areaType, country.Popilation as pop1, city.Population as pop2 " +
-                    "From 'Country' RIGHT JOIN city ON country.code = city.CountryCode " +
-                    "Where country." + categoryName + " '" + areaName + "') as waterDown " +
-                    "group by derp.name) as waterDown2 group by waterDown2.areaType";
+                    "Select country.name as name, country." + categoryName + " as areaType, country.Population as pop1, city.Population as pop2 " +
+                    "From country RIGHT JOIN city ON country.code = city.CountryCode " +
+                    "Where country." + categoryName + " = \" " + areaName + "\") as waterDown " +
+                    "group by waterDown.name, waterDown.pop1) as waterDown2 group by waterDown2.areaType";
             ResultSet resultSet = statement.executeQuery(query);
             ArrayList<PopulationReport> results = new ArrayList<>();
             while (resultSet.next()) {
@@ -129,6 +126,7 @@ public class SQLConnection {
                 return results;
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return null;
         }
     }
