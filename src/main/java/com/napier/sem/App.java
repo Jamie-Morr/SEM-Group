@@ -1,8 +1,12 @@
 package com.napier.sem;
 
+import com.napier.sem.BusinessLayer.BusinessLayer;
 import com.napier.sem.DataLayer.Column;
 import com.napier.sem.DataLayer.PopulationReport;
 import com.napier.sem.DataLayer.SQLConnection;
+
+import javax.sound.midi.SysexMessage;
+import javax.swing.plaf.synth.SynthEditorPaneUI;
 import java.util.ArrayList;
 
 /**
@@ -11,56 +15,50 @@ import java.util.ArrayList;
  * @version 03/02/2020
  */
 public class App {
-    private static SQLConnection database = null;
+    private static BusinessLayer bl = null;
     public static void main(String[] args)
     {
         //Initial app code
         System.out.println("Hello Kevin this is group 25!");
-        //Establishes an sql Connection
-        database = new SQLConnection();
-        //Checks if it connected in the end
-        if (!database.testConnection())
-        {
-            System.out.println("Connection failled, exiting app");
-            System.exit(-1);
-        }
-        else
-        {
-            System.out.println("Connection pass");
-        }
+        bl = new BusinessLayer();
         //@TODO add code here
 
-        System.out.println("TEST 1: Area population and its cities");
-        if (testPopWithCity()) {
-            System.out.println("PASS");
+        read(bl.getPopAdv(Column.REGION, "Eastern Europe"));
+
+
+
+        //Tells the business layer to pack up and go home.
+        bl.end();
+        bl = null;
+    }
+
+    /**
+     * Prints out the passed in string as a grid
+     * @param display - The 2d array that is meant to be displayed
+     */
+    private static void read(String[][] display) {
+        //for each row
+        for (String[] strings : display) {
+            //for each block in display
+            for (String string : strings) {
+                System.out.print(equlize(string, 25));
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * Spams spaces onto a string unil it is of the specified length
+     * @param string - the string that is to be extended in space
+     * @param length - the required length for the string
+     * @return passed in string with atleast the specifed length (Terms and conditions apply)
+     */
+    private static String equlize(String string, int length) {
+        if (string.length() < length) {
+            return equlize( string + " ", length);
         }
         else {
-            System.out.println("FAIL");
-        }
-
-
-
-
-
-        //Ends the database connection
-        database.disconnect();
-        database = null;
-    }
-
-    static boolean testPopWithCity()
-    {
-        ArrayList<PopulationReport> report;
-        report = database.popWithoutCity("Eastern Europe", Column.REGION);
-        if (report != null) {
-            for (PopulationReport rep : report) {
-                System.out.println(rep.conntents());
-            }
-            return true;
-        }
-        else
-        {
-            return false;
+            return string;
         }
     }
-
 }
