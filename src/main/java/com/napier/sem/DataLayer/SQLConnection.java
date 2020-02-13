@@ -91,11 +91,10 @@ public class SQLConnection {
      * @param areaCategory - class of what is being search for
      * @return A class contaning the name and population number of the specified location as well as the combined population of its cities.
      */
-    public ArrayList<PopulationReport> popWithoutCity(String areaName, Column areaCategory) {
+    public PopulationReport popWithoutCity(String areaName, Column areaCategory) {
         //converts the enum into the corresponding column
         String categoryName;
-        switch (areaCategory)
-        {
+        switch (areaCategory) {
             case CODE:
                 categoryName = "Code";
                 break;
@@ -124,19 +123,13 @@ public class SQLConnection {
             //Creates a list to store the results in, its an arrayList because they sound cooler than a list.
             ArrayList<PopulationReport> results = new ArrayList<>();
             //inserts the results into the list
-            while (resultSet.next()) {
-                results.add(new PopulationReport(resultSet.getString("areaType"), resultSet.getInt("pop1"), resultSet.getInt("pop2")));
-            }
-            //Returns the list if the sql query returned at least one result
-            if (results.isEmpty())
-            {
-                System.out.println("Failled to populate the results.");
-                return null;
+            if (resultSet.next()) {
+                return new PopulationReport(resultSet.getString("areaType"), resultSet.getInt("pop1"), resultSet.getInt("pop2"));
             }
             else {
-                return results;
+                return null;
             }
-        } catch (Exception e) {
+        } catch (Exception e){
             //System.out.println(e.getMessage());
             return null;
         }
