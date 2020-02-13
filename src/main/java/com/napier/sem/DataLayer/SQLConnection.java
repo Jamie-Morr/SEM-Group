@@ -134,4 +134,118 @@ public class SQLConnection {
             return null;
         }
     }
+
+    /**
+     * Returns a list of the specified column's populations order from top to lowest
+     * @param column - what land mass is meant to be grouped by
+     * @return list of PopulationReports containing the specified columns and their populations
+     */
+    public  ArrayList<PopulationReport> topPop(Column column) {
+        //Calls the variation of the function that has a limit but slaps it with that negative energy.
+        return topPop(column, -1, false);
+    }
+
+    /**
+     * Returns a list of the specified column's populations order from top to lowest
+     * @param column - what land mass is meant to be grouped by
+     * @param limit - how many volumes should be displayed
+     * @return list of PopulationReports containing the specified columns and their populations
+     */
+    public ArrayList<PopulationReport> topPop(Column column, int limit) {
+        return topPop(column, -1, false);
+    }
+
+    /**
+     * Returns a list of the specified column's populations order from top to lowest
+     * @param column - what land mass is meant to be grouped by
+     * @param limit - how many volumes should be displayed
+     * @param invert - if true the list goes from smallest to biggest population
+     * @return list of PopulationReports containing the specified columns and their populations
+     */
+    public ArrayList<PopulationReport> topPop(Column column, int limit, boolean invert) {
+        //converts the enum into the corresponding column
+        String query;
+        switch (column) {
+            case CODE: case NAME:
+                query = "SELECT Code, Name, Continent, Region, sum(Population) as Population, Capital";
+                break;
+            case CONTINENT:
+                query = "SELECT Continent, Region, sum(Population) as Population";
+                break;
+            case REGION:
+                query = "SELECT Region, sum(Population) as Population";
+                break;
+            default:
+                return null;
+        }
+        try {
+            //Creates and calls the sql query
+            Statement statement = connection.createStatement();
+            //Sets up the basic query
+            query += " FROM country ";
+            switch (column) {
+                case CODE: case NAME:
+                    query += "GROUP BY Code, Name, Continent, Region";
+                    break;
+                case CONTINENT:
+                    query += "GROUP BY Continent, Region";
+                    break;
+                case REGION:
+                    query += "GROUP BY Region";
+                    break;
+            }
+            //Orders the list
+            query += " ORDER BY sum(Population)";
+            if (!invert) {
+                query += " DESC";
+            }
+            //appends a limit if aplicable
+            if (!(limit < 0)) {
+                query += " LIMIT" + limit;
+            }
+            ResultSet resultSet = statement.executeQuery(query);
+            //Creates a list to store the results in, its an arrayList because they sound cooler than a list.
+            ArrayList<PopulationReport> results = new ArrayList<>();
+            //inserts the results into the list
+            switch (column) {
+                case CODE: case NAME:
+                    while (resultSet.next()) {
+                        results.add(new PopulationReport(
+                                new String[]{
+                                        resultSet.getString("Code"),
+                                        resultSet.getString("Name"),
+                                        resultSet.getString("Continent"),
+                                        resultSet.getString("Region"),
+                                        resultSet.getString("Capital")
+                                }
+                                , resultSet.getInt("Population")));
+                    }
+                    break;
+                case CONTINENT:
+                    while (resultSet.next()) {
+                        results.add(new PopulationReport(
+                                new String[]{
+                                        resultSet.getString("Continent"),
+                                        resultSet.getString("Region")
+                                }
+                                , resultSet.getInt("Population")));
+                    }
+                    break;
+                case REGION:
+                    while (resultSet.next()) {
+                        results.add(new PopulationReport(
+                                new String[]{
+                                        resultSet.getString("Region")
+                                }
+                                , resultSet.getInt("Population")));
+                    }
+                    break;
+                }
+            return results;
+        } catch (Exception e){
+            //System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
 }

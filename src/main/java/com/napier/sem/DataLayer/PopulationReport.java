@@ -7,6 +7,7 @@ package com.napier.sem.DataLayer;
  */
 public class PopulationReport {
     private String name;
+    private String[] otherDetails;
     private int pop;
     private int cityPop;
 
@@ -26,6 +27,11 @@ public class PopulationReport {
     PopulationReport(String name, int pop)
     {
         this.name = name;
+        this.pop = pop;
+    }
+
+    PopulationReport(String[] otherDetails, int pop) {
+        this.otherDetails = otherDetails;
         this.pop = pop;
     }
 
@@ -62,5 +68,9 @@ public class PopulationReport {
 
     public int getCityPop() {
         return cityPop;
+    }
+
+    public String[] getOtherDetails() {
+        return otherDetails;
     }
 }
