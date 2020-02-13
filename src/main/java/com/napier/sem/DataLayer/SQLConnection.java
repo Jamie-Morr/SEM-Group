@@ -10,18 +10,20 @@ import java.util.ArrayList;
  */
 public class SQLConnection {
 
+    /**
+     * Stores the connection
+     */
     private Connection connection = null;
 
     /**
-     * Creates a SQL database connection and allows for queering, drooping and reconnecting the database.
+     * Creates a SQL database connection and allows for questioning of the database.
      */
     public SQLConnection() {
         reconnect();
     }
 
     /**
-     * Attempts to establish or reestablish a database connection/
-     *
+     * Attempts to establish or reestablish a database connection
      * @return boolean - Returns whether a database connection was established.
      */
     public boolean reconnect() {
@@ -62,10 +64,10 @@ public class SQLConnection {
 
     /**
      * Break the database connection.
-     *
      * @return boolean - Whether the connection was drooped.
      */
     public boolean disconnect() {
+        //Tries to close the connection even if there is non
         try {
             connection.close();
             return true;
@@ -75,37 +77,42 @@ public class SQLConnection {
     }
 
     /**
-     * Tests the database connection
-     *
+     * Tests the database connection.
      * @return boolean - whether a database connection has been established
      */
     public boolean testConnection() {
-        if (connection != null) {
-            return true;
-        }
-        return false;
+        //This is a very complex function and explaining its complex interconnecting functionalities and dependancies can be brain-breaking but to sum up this mess, if the connection isn't missing returns true
+        return connection != null;
     }
 
-    public ArrayList<PopulationReport> popWithoutCity(String areaName, int areaCategory) {
-        String categoryName = null;
+    /**
+     * Gets the combined population of the specified location as well as its cities.
+     * @param areaName - content that is being searched for
+     * @param areaCategory - class of what is being search for
+     * @return A class contaning the name and population number of the specified location as well as the combined population of its cities.
+     */
+    public ArrayList<PopulationReport> popWithoutCity(String areaName, Column areaCategory) {
+        //converts the enum into the corresponding column
+        String categoryName;
         switch (areaCategory)
         {
-            case 0:
+            case CODE:
                 categoryName = "Code";
                 break;
-            case 1:
+            case NAME:
                 categoryName = "Name";
                 break;
-            case 2:
+            case CONTINENT:
                 categoryName = "Continent";
                 break;
-            case 3:
+            case REGION:
                 categoryName = "Region";
                 break;
             default:
-                break;
+                return null;
         }
         try {
+            //Creates and calls the sql query
             Statement statement = connection.createStatement();
             String query = "Select waterDown2.areaType as areaType, sum(waterDown2.pop1) as pop1, sum(waterDown2.pop2) as pop2 from( " +
                     "Select waterDown.areaType as areaType, waterDown.pop1 as pop1, sum(waterDown.pop2) as pop2 from( " +
@@ -114,10 +121,13 @@ public class SQLConnection {
                     "Where country." + categoryName + " = \"" + areaName + "\") as waterDown " +
                     "group by waterDown.name, waterDown.pop1) as waterDown2 group by waterDown2.areaType";
             ResultSet resultSet = statement.executeQuery(query);
+            //Creates a list to store the results in, its an arrayList because they sound cooler than a list.
             ArrayList<PopulationReport> results = new ArrayList<>();
+            //inserts the results into the list
             while (resultSet.next()) {
                 results.add(new PopulationReport(resultSet.getString("areaType"), resultSet.getInt("pop1"), resultSet.getInt("pop2")));
             }
+            //Returns the list if the sql query returned at least one result
             if (results.isEmpty())
             {
                 System.out.println("Failled to populate the results.");
@@ -127,7 +137,7 @@ public class SQLConnection {
                 return results;
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            //System.out.println(e.getMessage());
             return null;
         }
     }
