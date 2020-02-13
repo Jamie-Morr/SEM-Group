@@ -1,5 +1,6 @@
 package com.napier.sem;
 
+import com.napier.sem.DataLayer.Column;
 import com.napier.sem.DataLayer.PopulationReport;
 import com.napier.sem.DataLayer.SQLConnection;
 import java.util.ArrayList;
@@ -49,7 +50,7 @@ public class App {
     static boolean testPopWithCity()
     {
         ArrayList<PopulationReport> report;
-        report = database.popWithoutCity("Eastern Europe", 3);
+        report = database.popWithoutCity("Eastern Europe", Column.REGION);
         if (report != null) {
             for (PopulationReport rep : report) {
                 System.out.println(rep.conntents());
