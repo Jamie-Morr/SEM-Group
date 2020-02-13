@@ -22,5 +22,18 @@ public class PopulationReport {
     public String conntents()
     {
         return "name: " + name + ", pop: " + pop + ", city population: " + cityPop;
+
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getPop() {
+        return pop;
+    }
+
+    public int getCityPop() {
+        return cityPop;
     }
 }
