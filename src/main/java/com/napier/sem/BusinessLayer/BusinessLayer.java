@@ -161,6 +161,12 @@ public class BusinessLayer {
         switch (column) {
             case CODE: case NAME:
                 return null;
+            case DISTRICT:
+                result = new String[(prs.size() + 1)][3];
+                result[0][1] = "City Name";
+                result[0][0] = "District";
+                result[0][2] = "Population";
+                break;
             case REGION: case CONTINENT:
                 result = new String[(prs.size() + 1)][4];
                 result[0][0] = "Country:";
