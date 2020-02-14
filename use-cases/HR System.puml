@@ -16,7 +16,11 @@ usecase UC5 as "Generate capital data by their population"
 
 usecase UC6 as "Generate capital data by user provided population data"
 
-usecase UC7 as "Generate percentage population data"
+usecase UC7 as "Generate population of people of living and not living in cities"
+
+usecase UC8 as "Generate population for world, continent, region, country, district, city"
+
+usecase UC9 as "Generate population of people speaking chinese, english, hindi, spanish, arabic"
 
 DA -- UC1
 
@@ -32,5 +36,8 @@ DA -- UC6
 
 DA -- UC7
 
+DA -- UC8
+
+DA -- UC9
 
 @enduml
