@@ -1,10 +1,10 @@
-# USE CASE: 4 Produce a Report on the world population of cities on a Given Choice
+# USE CASE: 1 Produce a Report on the world population organised from largest to smallest 
 
 ## CHARACTERISTIC INFORMATION
 
 ### Goal in Context
 
-As an *Data analyst* I want *to produce a report on the population of cities on a imputed choice* so that *I can produce the required report.*
+As an *Data analyst* I want *to produce a report on the population of the continents from largest to smallest* so that *I can produce the required report.*
 
 ### Scope
 
@@ -36,7 +36,7 @@ A request for population information is sent to Data analyst.
 
 ## MAIN SUCCESS SCENARIO
 
-1. User request population of cities information for a given choice.
+1. User request population information for a continents from largest to smallest.
 2. Data analyst generates population of the selected choice to get population information for.
 3. Data analyst provides reports to world health organization.
 
