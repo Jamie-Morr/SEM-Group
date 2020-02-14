@@ -154,4 +154,40 @@ public class BusinessLayer {
         }
         return result;
     }
+
+    public String[][] getCityReport(Column column, String target) {
+        ArrayList<PopulationReport> prs = db.topCityPop(column, target);
+        String[][] result;
+        switch (column) {
+            case CODE: case NAME:
+                return null;
+            case REGION: case CONTINENT:
+                result = new String[(prs.size() + 1)][4];
+                result[0][0] = "Country:";
+                result[0][1] = "City Name";
+                result[0][2] = "District";
+                result[0][3] = "Population";
+                break;
+            default:
+                return null;
+        }
+        //Inserting the data into a 2d grid format
+        //For each report in the list
+        int i = 1;
+        for (PopulationReport pr:prs) {
+            //for each peace of information it should hold
+            int j = 0;
+            for (String string:pr.getOtherDetails()) {
+                //In case there's an issue with a value
+                if (string != null && string.length() >= 1) {
+                    result[i][j++] = string;
+                } else {
+                    result[i][j++] = " ";
+                }
+            }
+            //Plus the population
+            result[i++][j] = "" + pr.getPop();
+        }
+        return result;
+    }
 }
