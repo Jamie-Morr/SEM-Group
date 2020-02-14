@@ -158,6 +158,16 @@ public class SQLConnection {
     /**
      * Returns a list of the specified column's populations order from top to lowest
      * @param column - what land mass is meant to be grouped by
+     * @param invert - if true the list goes from smallest to biggest population
+     * @return list of PopulationReports containing the specified columns and their populations
+     */
+    public ArrayList<PopulationReport> topPop(Column column, boolean invert) {
+        return topPop(column, -1, invert);
+    }
+
+    /**
+     * Returns a list of the specified column's populations order from top to lowest
+     * @param column - what land mass is meant to be grouped by
      * @param limit - how many volumes should be displayed
      * @param invert - if true the list goes from smallest to biggest population
      * @return list of PopulationReports containing the specified columns and their populations
@@ -244,6 +254,65 @@ public class SQLConnection {
             return results;
         } catch (Exception e){
             //System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * Returns a list of Cities that belong to the specified area
+     * @param column - category of the area being searched for
+     * @param target - The name of the target area
+     * @return Cities of the specified area
+     */
+    public ArrayList<PopulationReport> topCityPop(Column column, String target) {
+        return topCityPop(column, target, -1, false);
+    }
+
+    /**
+     * Returns a list of Cities that belong to the specified area
+     * @param column - category of the area being searched for
+     * @param target - The name of the target area
+     * @param limit - how many results should be displayed
+     * @param invert - if the list should be lowest to biggest population
+     * @return Cities of the specified area
+     */
+    public ArrayList<PopulationReport> topCityPop(Column column, String target, int limit, boolean invert) {
+        String categoryName;
+        //Acting upon the right columns
+        switch (column) {
+            case CONTINENT:
+                categoryName = "Continent";
+                break;
+            case REGION:
+                categoryName = "Region";
+                break;
+            case DISTRICT:
+                //@TODO return city only query
+                return null;
+            default:
+                return null;
+        }
+        //Creating the query
+        String query = "SELECT country.name as cName, city.Name as name, city.District as dist, city.Population as pop FROM country " +
+                "RIGHT JOIN city ON city.CountryCode =  country.CODE " +
+                "Where country." + categoryName + " = \"" +
+                target + "\" ORDER BY city.Population DESC";
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            ArrayList<PopulationReport> results = new ArrayList<>();
+            while(resultSet.next()) {
+                results.add(new PopulationReport(
+                        new String[]{
+                                resultSet.getString("cName"), resultSet.getString("name"), resultSet.getString("dist")
+                        }
+                        , resultSet.getInt("pop")));
+            }
+            return results;
+        }
+        catch (SQLException e) {
+            System.out.println(query);
+            System.out.println(e.getMessage());
             return null;
         }
     }
