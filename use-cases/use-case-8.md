@@ -1,10 +1,10 @@
-# USE CASE: 7 Produce a Report on the World Population of People Living in Cities and not Living in Cities
+# USE CASE: 8 Produce a Report on the world population of World, Continent, Region, Country, District, City
 
 ## CHARACTERISTIC INFORMATION
 
 ### Goal in Context
 
-As an *Data analyst* I want *to produce a report on the population of people living in cities and not living in cities* so that *I can produce the required report.*
+As an *Data analyst* I want *to produce a report on the population of world, continent, region, country, district, city* so that *I can produce the required report.*
 
 ### Scope
 
@@ -36,7 +36,7 @@ A request for population information is sent to Data analyst.
 
 ## MAIN SUCCESS SCENARIO
 
-1. User request population of people living in cities and not living in cities.
+1. User request population of world, continent, region, country, district, city.
 2. Data analyst generates population of the selected choice to get population information for.
 3. Data analyst provides reports to world health organization.
 

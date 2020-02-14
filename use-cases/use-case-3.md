@@ -1,4 +1,4 @@
-# USE CASE: 3 Produce a Report on the cities population from largest to smallest
+# USE CASE: 3 Produce a Report on the Cities Population from Largest to Smallest
 
 ## CHARACTERISTIC INFORMATION
 

@@ -1,4 +1,4 @@
-# USE CASE: 2 Produce a Report on the world population of a User choice
+# USE CASE: 2 Produce a Report on the World Population of a User Choice
 
 ## CHARACTERISTIC INFORMATION
 

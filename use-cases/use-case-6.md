@@ -1,4 +1,4 @@
-# USE CASE: 6 Produce a Report on the world population of capital cities on a Given Choice
+# USE CASE: 6 Produce a Report on the World Population of Capital Cities on a Given Choice
 
 ## CHARACTERISTIC INFORMATION
 

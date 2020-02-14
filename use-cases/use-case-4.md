@@ -1,4 +1,4 @@
-# USE CASE: 4 Produce a Report on the world population of cities on a Given Choice
+# USE CASE: 4 Produce a Report on the World Population of Cities on a Given Choice
 
 ## CHARACTERISTIC INFORMATION
 

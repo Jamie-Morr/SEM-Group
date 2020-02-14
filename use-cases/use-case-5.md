@@ -1,4 +1,4 @@
-# USE CASE: 5 Produce a Report on the world population of capital cities from largest to smallest
+# USE CASE: 5 Produce a Report on the World Population of Capital Cities from Largest to Smallest
 
 ## CHARACTERISTIC INFORMATION
 

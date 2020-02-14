@@ -1,4 +1,4 @@
-# USE CASE: 1 Produce a Report on the world population organised from largest to smallest 
+# USE CASE: 1 Produce a Report on the World Population Organised from Largest to Smallest 
 
 ## CHARACTERISTIC INFORMATION
 
