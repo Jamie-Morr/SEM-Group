@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * This will evetualy aid in the conquest of the world through allowing the user<br>to view the populations of the world as wer as the number and percentage of people speaking certain languages<br>within specfied area(s)/location types
  * @author Oliwier, Arnas but NOT PETER
- * @version 03/02/2020
+ * @version 14/02/2020
  */
 public class App {
     private static BusinessLayer bl = null;
