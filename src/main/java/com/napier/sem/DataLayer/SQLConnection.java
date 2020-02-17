@@ -211,7 +211,7 @@ public class SQLConnection {
             }
             //appends a limit if aplicable
             if (!(limit < 0)) {
-                query += " LIMIT" + limit;
+                query += " LIMIT " + limit;
             }
             ResultSet resultSet = statement.executeQuery(query);
             //Creates a list to store the results in, its an arrayList because they sound cooler than a list.
@@ -287,8 +287,7 @@ public class SQLConnection {
                 categoryName = "Region";
                 break;
             case DISTRICT:
-                //@TODO return city only query
-                return null;
+                return topDistCityPop(target, limit, invert);
             default:
                 return null;
         }
@@ -314,6 +313,35 @@ public class SQLConnection {
             System.out.println(query);
             System.out.println(e.getMessage());
             return null;
+        }
+    }
+
+    public ArrayList<PopulationReport> topDistCityPop(String target, int limit, boolean invert) {
+        // Query Creation
+        String query = "Select city.District as dName, city.Name as name, city.Population as pop FROM city Where district = \"" + target + "\"";
+        //Orders the list
+        query += " ORDER BY Population";
+        if (!invert) {
+            query += " DESC";
+        }
+        //appends a limit if applicable
+        if (!(limit < 0)) {
+            query += " LIMIT " + limit;
+        }
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            ArrayList<PopulationReport> results = new ArrayList<>();
+            while (resultSet.next()) {
+                results.add(new PopulationReport(
+                        new String[]{
+                                resultSet.getString("dName"), resultSet.getString("name")}, resultSet.getInt("pop")));
+            }
+            return results;
+        }
+        catch (SQLException e ) {
+            System.out.println(e.getMessage());
+            return  null;
         }
     }
 
