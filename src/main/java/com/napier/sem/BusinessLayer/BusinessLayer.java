@@ -132,6 +132,16 @@ public class BusinessLayer {
                 result[0][0] = "Region:";
                 result[0][1] = "Population:";
                 break;
+            case WORLD:
+                result = new String[1][2];
+                if (prs != null && prs.size() > 0) {
+                result[0][0] = "World Population:";
+                result[0][1] = "" + prs.get(0).getOtherDetails()[0];
+                return result;
+                } else {
+                    System.out.println("Owwie empty result at WORLD ??");
+                    return null;
+                }
             default:
                 return null;
         }

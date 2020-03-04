@@ -5,5 +5,6 @@ public enum Column {
     NAME,
     CONTINENT,
     REGION,
-    DISTRICT
+    DISTRICT,
+    WORLD
 }

@@ -174,7 +174,7 @@ public class SQLConnection {
      */
     public ArrayList<PopulationReport> topPop(Column column, int limit, boolean invert) {
         //converts the enum into the corresponding column
-        String query;
+        String query = "";
         switch (column) {
             case CODE: case NAME:
                 query = "SELECT Code, Name, Continent, Region, sum(Population) as Population, Capital";
@@ -184,6 +184,8 @@ public class SQLConnection {
                 break;
             case REGION:
                 query = "SELECT Region, sum(Population) as Population";
+                break;
+            case WORLD:
                 break;
             default:
                 return null;
@@ -203,6 +205,8 @@ public class SQLConnection {
                 case REGION:
                     query += "GROUP BY Region";
                     break;
+                case WORLD:
+                    query = "SELECT sum(Population) as pop From country";
             }
             //Orders the list
             query += " ORDER BY sum(Population)";
@@ -250,10 +254,101 @@ public class SQLConnection {
                                 , resultSet.getInt("Population")));
                     }
                     break;
+                case WORLD:
+                    if (resultSet.next()) {
+                        results.add(new PopulationReport(new String[]{""+resultSet.getLong("pop")},-1));
+                    }
                 }
+
             return results;
         } catch (Exception e){
-            //System.out.println(e.getMessage());
+            System.out.println(e.getMessage());
+            return null;
+        }
+    }
+
+    public PopulationReport topPop(Column column, String target) {
+        //converts the enum into the corresponding column
+        String query;
+        switch (column) {
+            case CODE: case NAME:
+                query = "SELECT Code, Name, Continent, Region, sum(Population) as Population, Capital";
+                break;
+            case CONTINENT:
+                query = "SELECT Continent, Region, sum(Population) as Population";
+                break;
+            case REGION:
+                query = "SELECT Region, sum(Population) as Population";
+                break;
+            default:
+                return null;
+        }
+        try {
+            //Creates and calls the sql query
+            Statement statement = connection.createStatement();
+            //Sets up the basic query
+            query += " FROM country Where ";
+            switch (column) {
+                case CODE:
+                    query += "Code = \"";
+                    break;
+                case NAME:
+                    query += "Name = \"";
+                    break;
+                case CONTINENT:
+                    query += "Continent = \"";
+                    break;
+                case REGION:
+                    query += "Region = \"";
+                    break;
+            }
+            query += target + "\" ";
+            switch (column) {
+                case CODE: case NAME:
+                    query += "GROUP BY Code, Name, Continent, Region";
+                    break;
+                case CONTINENT:
+                    query += "GROUP BY Continent, Region";
+                    break;
+                case REGION:
+                    query += "GROUP BY Region";
+                    break;
+            }
+            ResultSet resultSet = statement.executeQuery(query);
+            //Creates a list to store the results in, its an arrayList because they sound cooler than a list.
+            PopulationReport result = null;
+            //inserts the results into the list
+            switch (column) {
+                case CODE: case NAME:
+                        result = new PopulationReport(
+                                new String[]{
+                                        resultSet.getString("Code"),
+                                        resultSet.getString("Name"),
+                                        resultSet.getString("Continent"),
+                                        resultSet.getString("Region"),
+                                        resultSet.getString("Capital")
+                                }
+                                , resultSet.getInt("Population"));
+                    break;
+                case CONTINENT:
+                        result = new PopulationReport(
+                                new String[]{
+                                        resultSet.getString("Continent"),
+                                        resultSet.getString("Region")
+                                }
+                                , resultSet.getInt("Population"));
+                    break;
+                case REGION:
+                        result = new PopulationReport(
+                                new String[]{
+                                        resultSet.getString("Region")
+                                }
+                                , resultSet.getInt("Population"));
+                    break;
+            }
+            return result;
+        } catch (Exception e){
+            System.out.println(e.getMessage());
             return null;
         }
     }
@@ -316,18 +411,28 @@ public class SQLConnection {
         }
     }
 
+
+
+    /**
+     * Writen by jam
+     * @param target - name of disrtict
+     * @param limit - max nubmer of districs that can ve displayed
+     * @param invert - flips the list
+     * @return list of pop reports, contains all the cities in the specified district
+     */
     public ArrayList<PopulationReport> topDistCityPop(String target, int limit, boolean invert) {
         // Query Creation
         String query = "Select city.District as dName, city.Name as name, city.Population as pop FROM city Where district = \"" + target + "\"";
-        //Orders the list
+        // Orders the list
         query += " ORDER BY Population";
         if (!invert) {
             query += " DESC";
         }
-        //appends a limit if applicable
+        // appends a limit if applicable
         if (!(limit < 0)) {
             query += " LIMIT " + limit;
         }
+        // Asks the querry created above and stores it as population reports in reports
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
