@@ -390,7 +390,16 @@ public class SQLConnection {
         String query = "SELECT country.name as cName, city.Name as name, city.District as dist, city.Population as pop FROM country " +
                 "RIGHT JOIN city ON city.CountryCode =  country.CODE " +
                 "Where country." + categoryName + " = \"" +
-                target + "\" ORDER BY city.Population DESC";
+                target + "\"";
+        query += " ORDER BY pop";
+        if (!invert) {
+            query += " DESC";
+        }
+        // appends a limit if applicable
+        if (!(limit < 0)) {
+            query += " LIMIT " + limit;
+        }
+
         try {
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
@@ -424,7 +433,7 @@ public class SQLConnection {
         // Query Creation
         String query = "Select city.District as dName, city.Name as name, city.Population as pop FROM city Where district = \"" + target + "\"";
         // Orders the list
-        query += " ORDER BY Population";
+        query += " ORDER BY pop";
         if (!invert) {
             query += " DESC";
         }

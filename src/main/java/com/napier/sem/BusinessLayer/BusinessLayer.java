@@ -166,11 +166,21 @@ public class BusinessLayer {
     }
 
     public String[][] getCityReport(Column column, String target) {
-        ArrayList<PopulationReport> prs = db.topCityPop(column, target);
+        return getCityReport(column, target, -1, false);
+    }
+
+    public String[][] getCityReport(Column column, String target, int limit) {
+        return getCityReport(column, target, limit, false);
+    }
+
+    public String[][] getCityReport(Column column, String target, boolean flip) {
+        return  getCityReport(column, target, -1, flip);
+    }
+
+    public String[][] getCityReport(Column column, String target, int limit, boolean flip) {
+        ArrayList<PopulationReport> prs = db.topCityPop(column, target, limit, flip);
         String[][] result;
         switch (column) {
-            case CODE: case NAME:
-                return null;
             case DISTRICT:
                 result = new String[(prs.size() + 1)][3];
                 result[0][1] = "City Name";
