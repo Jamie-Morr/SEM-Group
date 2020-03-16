@@ -216,4 +216,121 @@ public class BusinessLayer {
         }
         return result;
     }
+
+    /**
+     * Intended for Column.WORLD, otherwise return null;
+     * @return 2d string grid of Name, Country and Population of all world capitals
+     */
+    public String[][] getCapitalsOf(Column column) {
+        return getCapitalsOf(column, -1, false);
+    }
+    /**
+     * Retuns all the capitals of the specified target
+     * @param column - The region type that the capitals of are to be returned
+     * @param target - The name of the region
+     * @return 2d string grid of Name, Country and Population
+     */
+    public String[][] getCapitalsOf(Column column, String target) {
+        return getCapitalsOf(column, target, -1, false);
+    }
+    /**
+     * Retuns all the capitals of the specified target
+     * @param column - The region type that the capitals of are to be returned
+     * @param target - The name of the region
+     * @param limit - max no of results
+     * @return 2d string grid of Name, Country and Population
+     */
+    public String[][] getCapitalsOf(Column column, String target, int limit) {
+        return getCapitalsOf(column, target, limit, false);
+    }
+    /**
+     * Retuns all the capitals of the specified target
+     * @param column - The region type that the capitals of are to be returned
+     * @param target - The name of the region
+     * @param flip - If the list should go from smallest to largest population amount
+     * @return 2d string grid of Name, Country and Population
+     */
+    public String[][] getCapitalsOf(Column column, String target, boolean flip) {
+        return getCapitalsOf(column, target, -1, flip);
+    }
+    /**
+     * Intended for Column.WORLD, otherwise return null;
+     * @param column - Column.WORLD
+     * @param limit - max no of results
+     * @param flip - If the list should go from smallest to largest population amount
+     * @return 2d string grid of Name, Country and Population of all world capitals
+     */
+    public String[][] getCapitalsOf(Column column, int limit, boolean flip) {
+        ArrayList<PopulationReport> prs = db.CapitalsOf(column, limit, flip);
+        String[][] result;
+        if (column == Column.WORLD) {
+            result = new String[(prs.size() + 1)][3];
+            result[0][0] = "City Name";
+            result[0][1] = "Country";
+            result[0][2] = "Population";
+        }
+        else {
+            return null;
+        }
+        //Inserting the data into a 2d grid format
+        //For each report in the list
+        int i = 1;
+        for (PopulationReport pr:prs) {
+            //for each peace of information it should hold
+            int j = 0;
+            for (String string:pr.getOtherDetails()) {
+                //In case there's an issue with a value
+                if (string != null && string.length() >= 1) {
+                    result[i][j++] = string;
+                } else {
+                    result[i][j++] = " ";
+                }
+            }
+            //Plus the population
+            result[i++][j] = "" + pr.getPop();
+        }
+        return result;
+    }
+    /**
+     * Retuns all the capitals of the specified target
+     * @param column - The region type that the capitals of are to be returned
+     * @param target - The name of the region
+     * @param limit - max no of results
+     * @param flip - If the list should go from smallest to largest population amount
+     * @return 2d string grid of Name, Country and Population
+     */
+    public String[][] getCapitalsOf(Column column, String target, int limit, boolean flip) {
+        ArrayList<PopulationReport> prs = db.CapitalsOf(column, target, limit, flip);
+        String[][] result;
+        switch (column) {
+            case REGION: case CONTINENT:
+                result = new String[(prs.size() + 1)][3];
+                result[0][0] = "City Name";
+                result[0][1] = "Country";
+                result[0][2] = "Population";
+                break;
+            case WORLD:
+                return getCapitalsOf(column, limit, flip);
+            default:
+                return null;
+        }
+        //Inserting the data into a 2d grid format
+        //For each report in the list
+        int i = 1;
+        for (PopulationReport pr:prs) {
+            //for each peace of information it should hold
+            int j = 0;
+            for (String string:pr.getOtherDetails()) {
+                //In case there's an issue with a value
+                if (string != null && string.length() >= 1) {
+                    result[i][j++] = string;
+                } else {
+                    result[i][j++] = " ";
+                }
+            }
+            //Plus the population
+            result[i++][j] = "" + pr.getPop();
+        }
+        return result;
+    }
 }

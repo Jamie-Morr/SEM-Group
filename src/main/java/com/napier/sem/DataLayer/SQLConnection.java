@@ -459,4 +459,76 @@ public class SQLConnection {
         }
     }
 
+    public ArrayList<PopulationReport> CapitalsOf(Column column, int limit, boolean flip) {
+        // Query Creation
+        String query = "SELECT country.Name as country, city.Name as city, city.Population as pop From country join city on country.Capital = city.ID";
+        if (column != Column.WORLD) {
+            return null;
+        }
+        query += " ORDER BY pop";
+        //Flips the order if applicable
+        if (!flip) {
+            query += " DESC";
+        }
+        // appends a limit if applicable
+        if (!(limit < 0)) {
+            query += " LIMIT " + limit;
+        }
+        // Asks the query created above and stores it as population reports in reports
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            ArrayList<PopulationReport> results = new ArrayList<>();
+            while (resultSet.next()) {
+                results.add(new PopulationReport(
+                        new String[]{
+                                resultSet.getString("city"), resultSet.getString("country")}, resultSet.getInt("pop")));
+            }
+            return results;
+        }
+        catch (SQLException e ) {
+            System.out.println(e.getMessage());
+            return  null;
+        }
+    }
+    public ArrayList<PopulationReport> CapitalsOf(Column column, String target, int limit, boolean flip) {
+        // Query Creation
+        String query = "SELECT country.Name as country, city.Name as city, city.Population as pop From country join city on country.Capital = city.ID  ";
+        switch (column) {
+            case CONTINENT:
+                query += "WHERE country.Continent = \"" + target + "\"";
+                break;
+            case REGION:
+                query += "WHERE country.Region = \"" + target + "\"";
+                break;
+            default:
+                return null;
+        }
+        query += " ORDER BY pop";
+        //Flips the order if applicable
+        if (!flip) {
+            query += " DESC";
+        }
+        // appends a limit if applicable
+        if (!(limit < 0)) {
+            query += " LIMIT " + limit;
+        }
+        // Asks the query created above and stores it as population reports in reports
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+            ArrayList<PopulationReport> results = new ArrayList<>();
+            while (resultSet.next()) {
+                results.add(new PopulationReport(
+                        new String[]{
+                                resultSet.getString("city"), resultSet.getString("country")}, resultSet.getInt("pop")));
+            }
+            return results;
+        }
+        catch (SQLException e ) {
+            System.out.println(e.getMessage());
+            return  null;
+        }
+    }
+
 }
