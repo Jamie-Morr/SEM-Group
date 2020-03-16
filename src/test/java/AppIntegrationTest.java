@@ -22,7 +22,7 @@ public class AppIntegrationTest
     @Test
     void testGetPopulation()
     {
-        //Column.REGION = app.getPopAdv("Eastern Europe")
+        Column.REGION = app.topPop(Column.CONTINENT);
         //app.popWithoutCity("", Column.CODE);
         assertEquals(true, true);
 
