@@ -2,8 +2,33 @@ sudo: required
 
 language: java
 
+addons:
+  hosts:
+  - db
+
 services:
 - docker
 
 after_success:
 - docker-compose up --abort-on-container-exit
+
+jobs:
+  include:
+  - stage: unit tests
+    install: skip
+    jdk: oraclejdk11
+    script: mvn test -Dtest=AppIntegrationTest
+  - stage: integration tests
+    jdk: oraclejdk11
+    script: mvn test -Dtest=AppIntegrationTest
+  - stage: deploy
+    install: skip
+    jdk: oraclejdk11
+    script: echo "Deploy"
+
+
+stages:
+- unit tests
+- integration tests
+- name: deploy
+  if: branch = master

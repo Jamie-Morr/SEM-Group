@@ -19,14 +19,14 @@ public class SQLConnection {
      * Creates a SQL database connection and allows for questioning of the database.
      */
     public SQLConnection() {
-        reconnect();
+        connect("localhost:3306");
     }
 
     /**
      * Attempts to establish or reestablish a database connection
      * @return boolean - Returns whether a database connection was established.
      */
-    public boolean reconnect() {
+    public boolean connect(String address) {
         //Getting the database driver
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -38,7 +38,7 @@ public class SQLConnection {
         for (int i = 0; i < 100; i++) {
             //Tries to connect
             try {
-                connection = DriverManager.getConnection("jdbc:mysql://db:3306/world?useSSL=false", "root", "example");
+                connection = DriverManager.getConnection("jdbc:mysql://" + address + "/world?useSSL=false", "root", "example");
                 System.out.println("Establishing a means communication.");
                 break;
             }
